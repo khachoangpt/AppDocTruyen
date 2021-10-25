@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">DocTruyenApp</string>
+    <string name="app_login">Đăng Nhập</string>
+    <string name="app_login_username">Tài khoản</string>
+    <string name="app_login_password">Mật khẩu</string>
+    <string name="app_btn_login">Đăng Nhập</string>
+    <string name="app_btn_register">Đăng ký</string>
+
+    <string name="app_register">Đăng ký</string>
+    <string name="app_register_username">Tài khoản</string>
+    <string name="app_register_password">Mật khẩu</string>
+    <string name="app_register_email">Email</string>
+    <string name="app_btn_return_login">Trở về đăng nhập</string>
+
+    <string name="app_ten_truyen">Tên Truyện</string>
+</resources>

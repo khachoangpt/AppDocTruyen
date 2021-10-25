@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".LoginActivity">
+    <TextView
+        android:layout_marginTop="100dp"
+        android:layout_gravity="center"
+        android:textColor="#2196F3"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:text="@string/app_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></TextView>
+
+    <EditText
+        android:id="@+id/login_username"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="90dp"
+        android:drawableRight="@drawable/ic_baseline_account_circle_24"
+        android:hint="@string/app_login_username"
+        android:minHeight="48dp"></EditText>
+
+    <EditText
+        android:id="@+id/login_password"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:inputType="textPassword"
+        android:layout_marginTop="50dp"
+        android:drawableRight="@drawable/ic_baseline_vpn_key_24"
+        android:hint="@string/app_login_password"
+        android:minHeight="48dp"></EditText>
+    <Button
+        android:id="@+id/login_btnLogin"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:text="@string/app_btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></Button>
+    <Button
+        android:id="@+id/login_btnRegister"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:text="@string/app_btn_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></Button>
+</LinearLayout>

@@ -50,8 +50,8 @@ public class AdapterInformation extends BaseAdapter {
 
         Account account = accountList.get(i);
 
-        txtAccountName.setText(account.getUsername());
-        txtEmail.setText(account.getEmail());
+        txtAccountName.setText(account.username);
+        txtEmail.setText(account.email);
 
         return convertView;
     }

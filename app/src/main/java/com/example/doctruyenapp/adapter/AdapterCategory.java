@@ -52,9 +52,9 @@ public class AdapterCategory extends BaseAdapter {
 
         Category cm = (Category) getItem(i);
 
-        txtCategoryName.setText(cm.getCategoryName());
+        txtCategoryName.setText(cm.categoryName);
 
-        Picasso.get().load(cm.getImage()).placeholder(R.drawable.ic_load).error(R.drawable.ic_baseline_image_24).into(img);
+        Picasso.get().load(cm.image).placeholder(R.drawable.ic_load).error(R.drawable.ic_baseline_image_24).into(img);
 
         return convertView;
     }

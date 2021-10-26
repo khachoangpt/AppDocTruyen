@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.room.Room;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -23,7 +24,8 @@ import android.widget.ViewFlipper;
 import com.example.doctruyenapp.adapter.AdapterStory;
 import com.example.doctruyenapp.adapter.AdapterCategory;
 import com.example.doctruyenapp.adapter.AdapterInformation;
-import com.example.doctruyenapp.database.Database;
+import com.example.doctruyenapp.dao.StoryDAO;
+import com.example.doctruyenapp.database.AppDatabase;
 import com.example.doctruyenapp.model.Account;
 import com.example.doctruyenapp.model.Category;
 import com.example.doctruyenapp.model.Story;
@@ -31,6 +33,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,16 +47,17 @@ public class MainActivity extends AppCompatActivity {
     AdapterStory adapterStory;
     ArrayList<Category> categoryArrayList;
     ArrayList<Account> accountArrayList;
-    Database database;
     AdapterCategory adapterCategory;
     AdapterInformation adapterInformation;
+    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-        database = new Database(this);
+
+        db = AppDatabase.getInstance(this);
+
         //receive data from LoginActivity
         int i = getIntent().getIntExtra("phanquyen", 0);
         int id = getIntent().getIntExtra("id", 0);
@@ -69,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(MainActivity.this, ContentActivity.class);
-                String ten = storyArrayList.get(i).getTitle();
-                String content = storyArrayList.get(i).getContent();
+                String ten = storyArrayList.get(i).title;
+                String content = storyArrayList.get(i).content;
                 intent.putExtra("tentruyen", ten);
                 intent.putExtra("noidung", content);
                 startActivity(intent);
@@ -158,20 +162,17 @@ public class MainActivity extends AppCompatActivity {
 
         storyArrayList = new ArrayList<>();
 
-        Cursor cursor = database.getThreeNewestStory();
-        while (cursor.moveToNext()){
-            int id = cursor.getInt(0);
-            String title = cursor.getString(1);
-            String content = cursor.getString(2);
-            String image = cursor.getString(3);
-            int id_tk = cursor.getInt(4);
-            storyArrayList.add(new Story(id, title, content, image, id_tk));
+        List<Story> storyList = db.storyDAO().getThreeNewestStory();
+
+        for (Story story : storyList) {
+            int id = story.id;
+            String title = story.title;
+            String content = story.content;
+            String image = story.image;
+            storyArrayList.add(new Story(id, title, content, image));
             adapterStory = new AdapterStory(getApplicationContext(), storyArrayList);
             listViewNew.setAdapter(adapterStory);
         }
-
-        cursor.moveToFirst();
-        cursor.close();
 
         //Information
         accountArrayList = new ArrayList<>();

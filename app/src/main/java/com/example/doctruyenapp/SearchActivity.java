@@ -13,10 +13,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.doctruyenapp.adapter.AdapterStory;
-import com.example.doctruyenapp.database.Database;
+import com.example.doctruyenapp.dao.StoryDAO;
+import com.example.doctruyenapp.database.AppDatabase;
 import com.example.doctruyenapp.model.Story;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -25,12 +27,14 @@ public class SearchActivity extends AppCompatActivity {
     ArrayList<Story> listStory;
     ArrayList<Story> listSearch;
     AdapterStory adapterStory;
-    Database database;
+    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        db = AppDatabase.getInstance(this);
 
         listviewSearch = findViewById(R.id.listview);
         edtSearch = findViewById(R.id.edt_search);
@@ -41,8 +45,8 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent intent = new Intent(SearchActivity.this, ContentActivity.class);
-                String title = listSearch.get(position).getTitle();
-                String content = listSearch.get(position).getContent();
+                String title = listSearch.get(position).title;
+                String content = listSearch.get(position).content;
                 intent.putExtra("tentruyen", title);
                 intent.putExtra("noidung", content);
                 startActivity(intent);
@@ -74,7 +78,7 @@ public class SearchActivity extends AppCompatActivity {
 
         ArrayList<Story> filterList = new ArrayList<>();
         for (Story item : listStory) {
-            if (item.getTitle().toLowerCase().contains(text.toLowerCase())) {
+            if (item.title.toLowerCase().contains(text.toLowerCase())) {
                 //Add to filterList
                 filterList.add(item);
 
@@ -89,22 +93,18 @@ public class SearchActivity extends AppCompatActivity {
     private void iniList() {
         listStory = new ArrayList<>();
         listSearch = new ArrayList<>();
-        database = new Database(this);
 
-        Cursor cursor = database.getAllStory();
+        List<Story> storyList = db.storyDAO().getAllStory();
 
-        while (cursor.moveToNext()) {
-            int id = cursor.getInt(0);
-            String tenTruyen = cursor.getString(1);
-            String noidung = cursor.getString(2);
-            String anh = cursor.getString(3);
-            int id_tk = cursor.getInt(4);
-            listStory.add(new Story(id, tenTruyen, noidung, anh, id_tk));
-            listSearch.add(new Story(id, tenTruyen, noidung, anh, id_tk));
+        for (Story story : storyList) {
+            int id = story.id;
+            String title = story.title;
+            String content = story.content;
+            String image = story.image;
+            listStory.add(new Story(id, title, content, image));
+            listSearch.add(new Story(id, title, content, image));
             adapterStory = new AdapterStory(getApplicationContext(), listStory);
             listviewSearch.setAdapter(adapterStory);
         }
-        cursor.moveToFirst();
-        cursor.close();
     }
 }

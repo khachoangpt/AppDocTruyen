@@ -9,22 +9,27 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
-import com.example.doctruyenapp.database.Database;
+import com.example.doctruyenapp.dao.AccountDAO;
+import com.example.doctruyenapp.database.AppDatabase;
+import com.example.doctruyenapp.model.Account;
+
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
     EditText edtUsername, edtPassword;
     Button btnLogin, btnRegister;
-    Database database;
+    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mapping();
+        db = AppDatabase.getInstance(this);
 
-        database = new Database(this);
+        mapping();
 
         //Click event for button register
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -44,20 +49,20 @@ public class LoginActivity extends AppCompatActivity {
 
                 //Using cursor to get data
                 //Call getAllAccount() to get all accounts
-                Cursor cursor = database.getAllAccount();
+                List<Account> accountList = db.accountDAO().getAllAccount();
 
                 boolean check = false;
 
-                while (cursor.moveToNext()){
-                    String db_username = cursor.getString(1);
-                    String db_password = cursor.getString(2);
+                for (Account account : accountList) {
+                    String db_username = account.username;
+                    String db_password = account.password;
 
                     //Account exist
                     if(db_username.equals(username) && db_password.equals(password)){
-                        int role = cursor.getInt(4);
-                        int id = cursor.getInt(0);
-                        String email = cursor.getString(3);
-                        String accountName = cursor.getString(1);
+                        int role = account.role;
+                        int id = account.accountId;
+                        String email = account.email;
+                        String accountName = account.username;
 
                         //Move to MainActivity
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -75,8 +80,6 @@ public class LoginActivity extends AppCompatActivity {
                 if(!check){
                     Toast.makeText(LoginActivity.this, "Sai tên tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
                 }
-                cursor.moveToFirst();
-                cursor.close();
             }
         });
     }

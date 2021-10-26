@@ -35,7 +35,7 @@ public class AdapterStory extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return listStory.get(i).getId();
+        return listStory.get(i).id;
     }
 
     //filter
@@ -62,9 +62,9 @@ public class AdapterStory extends BaseAdapter {
         convertView.setTag(viewHolder);
 
         Story story = (Story) getItem(i);
-        viewHolder.txtStoryName.setText(story.getTitle());
+        viewHolder.txtStoryName.setText(story.title);
 
-        Picasso.get().load(story.getImage()).placeholder(R.drawable.ic_load).error(R.drawable.ic_baseline_image_24).into(viewHolder.imgStory);
+        Picasso.get().load(story.image).placeholder(R.drawable.ic_load).error(R.drawable.ic_baseline_image_24).into(viewHolder.imgStory);
 
         return convertView;
     }

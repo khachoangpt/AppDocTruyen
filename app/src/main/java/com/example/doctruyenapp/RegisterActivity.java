@@ -8,19 +8,23 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
-import com.example.doctruyenapp.database.Database;
+import com.example.doctruyenapp.dao.AccountDAO;
+import com.example.doctruyenapp.database.AppDatabase;
 import com.example.doctruyenapp.model.Account;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText edtUsername, edtPassword, edtEmail;
     Button btnReturnLogin, btnRegister;
-    Database database = new Database(this);
+    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        db = AppDatabase.getInstance(this);
 
         mapping();
 
@@ -43,7 +47,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }else{
                     int role = 1;
                     Account a = new Account(username, password, email, role);
-                    database.addAccount(a);
+                    db.accountDAO().addAccount(a);
                     Toast.makeText(RegisterActivity.this, "Register Successful", Toast.LENGTH_SHORT).show();
                 }
             }

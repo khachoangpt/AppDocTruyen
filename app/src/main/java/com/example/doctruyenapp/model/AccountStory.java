@@ -10,10 +10,12 @@ import androidx.room.PrimaryKey;
         foreignKeys = {
                 @ForeignKey(entity = Account.class,
                         parentColumns = "accountId",
-                        childColumns = "accountId"),
+                        childColumns = "accountId",
+                        onDelete = ForeignKey.CASCADE),
                 @ForeignKey(entity = Story.class,
                         parentColumns = "id",
-                        childColumns = "storyId")
+                        childColumns = "storyId",
+                        onDelete = ForeignKey.CASCADE)
         })
 public class AccountStory {
     @PrimaryKey(autoGenerate = true)

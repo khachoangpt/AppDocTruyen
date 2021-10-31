@@ -49,6 +49,8 @@ public class RegisterActivity extends AppCompatActivity {
                     Account a = new Account(username, password, email, role);
                     db.accountDAO().addAccount(a);
                     Toast.makeText(RegisterActivity.this, "Register Successful", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    startActivity(intent);
                 }
             }
         });

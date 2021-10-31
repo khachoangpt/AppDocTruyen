@@ -1,80 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawerlayout"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawerlayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <androidx.appcompat.widget.Toolbar
-                android:background="#FFFFFF"
-                android:id="@+id/toolbarMainScreen"
+            android:layout_height="match_parent">
+
+            <androidx.core.widget.NestedScrollView
+                android:scrollbars="vertical"
+                android:fillViewport="true"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:title="Tủ Truyện"></androidx.appcompat.widget.Toolbar>
-            <ViewFlipper
-                android:id="@+id/viewFlipper"
-                android:background="#FFFFFF"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"></ViewFlipper>
-            <LinearLayout
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbarMainScreen"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="#FFFFFF"
+                        app:title="Tủ Truyện"></androidx.appcompat.widget.Toolbar>
+
+                    <ViewFlipper
+                        android:id="@+id/viewFlipper"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:background="#FFFFFF"></ViewFlipper>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#ffffff"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="Mới nhất"
+                            android:textColor="#EF0303"
+                            android:textSize="25sp"
+                            android:textStyle="bold"></TextView>
+
+                        <ListView
+                            android:id="@+id/listviewNew"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#8BC34A"></ListView>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="Truyện đã thích"
+                            android:textColor="#EF0303"
+                            android:textSize="25sp"
+                            android:textStyle="bold"></TextView>
+
+                        <ListView
+                            android:id="@+id/listviewMyStory"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#03A9F4"></ListView>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+
+            <com.google.android.material.navigation.NavigationView
+                android:id="@+id/navigationView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#ffffff"
-                android:orientation="vertical">
-                <TextView
+                android:layout_gravity="start|left">
+
+                <ListView
+                    android:id="@+id/lv_information"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"></ListView>
+
+                <ListView
+                    android:id="@+id/lvMainScreen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="#EF0303"
-                    android:textStyle="bold"
-                    android:textSize="25sp"
-                    android:layout_margin="5dp"
-                    android:text="Mới nhất"></TextView>
-                <ListView
-                    android:id="@+id/listviewNew"
-                    android:background="#8BC34A"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></ListView>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#EF0303"
-                    android:textStyle="bold"
-                    android:textSize="25sp"
-                    android:layout_margin="5dp"
-                    android:text="Truyện đã thích"></TextView>
-                <ListView
-                    android:id="@+id/listviewMyStory"
-                    android:background="#8BC34A"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></ListView>
-            </LinearLayout>
-        </LinearLayout>
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigationView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="start|left">
+                    android:layout_marginTop="150dp"></ListView>
+            </com.google.android.material.navigation.NavigationView>
 
-            <ListView
-                android:id="@+id/lv_information"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"></ListView>
-            <ListView
-                android:id="@+id/lvMainScreen"
-                android:layout_marginTop="150dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></ListView>
-        </com.google.android.material.navigation.NavigationView>
-
-    </androidx.drawerlayout.widget.DrawerLayout>
+        </androidx.drawerlayout.widget.DrawerLayout>
 
 
-</LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>

@@ -48,7 +48,7 @@ public class AdapterCategory extends BaseAdapter {
 
         ImageView img = convertView.findViewById(R.id.imgchuyenmuc);
 
-        TextView txtCategoryName = (TextView) convertView.findViewById(R.id.tvchuyenmuc);
+        TextView txtCategoryName = convertView.findViewById(R.id.tvchuyenmuc);
 
         Category cm = (Category) getItem(i);
 

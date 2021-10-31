@@ -21,8 +21,15 @@
         <entry key="..\:/DocTruyenApp/app/src/main/res/menu/mymenu.xml" value="0.25" />
         <entry key="..\:/Semester_7/PRM391/AppDocTruyen/app/src/main/res/layout/activity_add_story.xml" value="0.25" />
         <entry key="..\:/Semester_7/PRM391/AppDocTruyen/app/src/main/res/layout/activity_admin.xml" value="0.25" />
+        <entry key="..\:/Semester_7/PRM391/AppDocTruyen/app/src/main/res/layout/activity_favorite_story.xml" value="0.25" />
+        <entry key="..\:/Semester_7/PRM391/AppDocTruyen/app/src/main/res/layout/activity_info.xml" value="0.25" />
         <entry key="..\:/Semester_7/PRM391/AppDocTruyen/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Semester_7/PRM391/AppDocTruyen/app/src/main/res/layout/activity_main2.xml" value="0.25" />
+        <entry key="..\:/Semester_7/PRM391/AppDocTruyen/app/src/main/res/layout/category.xml" value="0.25" />
+        <entry key="..\:/Semester_7/PRM391/AppDocTruyen/app/src/main/res/layout/delete_dialog.xml" value="0.25" />
+        <entry key="..\:/Semester_7/PRM391/AppDocTruyen/app/src/main/res/layout/like_dialog.xml" value="0.25" />
+        <entry key="..\:/Semester_7/PRM391/AppDocTruyen/app/src/main/res/layout/navigation_thongtin.xml" value="0.25" />
+        <entry key="..\:/Semester_7/PRM391/AppDocTruyen/app/src/main/res/layout/new_story.xml" value="0.25" />
       </map>
     </option>
   </component>

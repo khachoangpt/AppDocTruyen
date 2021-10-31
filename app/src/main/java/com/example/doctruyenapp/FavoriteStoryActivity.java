@@ -13,47 +13,60 @@ import android.widget.Toast;
 
 import com.example.doctruyenapp.adapter.AdapterStory;
 import com.example.doctruyenapp.database.AppDatabase;
+import com.example.doctruyenapp.model.AccountStory;
 import com.example.doctruyenapp.model.Story;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminActivity extends AppCompatActivity {
-    Button btnAddStory;
-    ListView listView;
+public class FavoriteStoryActivity extends AppCompatActivity {
+
+    AppDatabase db;
+    ListView lvFavoriteStory;
     ArrayList<Story> listStory;
     AdapterStory adapterStory;
-    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin);
+        setContentView(R.layout.activity_favorite_story);
 
         db = AppDatabase.getInstance(this);
-
-        listView = findViewById(R.id.listviewAdmin);
-        btnAddStory = findViewById(R.id.btn_add_story);
-
+        lvFavoriteStory = findViewById(R.id.lvFavoriteStory);
         initList();
 
-        btnAddStory.setOnClickListener(new View.OnClickListener() {
+        lvFavoriteStory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                int id = getIntent().getIntExtra("Id", 0);
-                Intent intent = new Intent(AdminActivity.this, AddStoryActivity.class);
-                intent.putExtra("Id", id);
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(FavoriteStoryActivity.this, ContentActivity.class);
+                String ten = listStory.get(i).title;
+                String content = listStory.get(i).content;
+                intent.putExtra("tentruyen", ten);
+                intent.putExtra("noidung", content);
                 startActivity(intent);
             }
         });
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        lvFavoriteStory.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
                 showDeleteDialog(pos);
                 return true;
             }
         });
+    }
+
+    //Add data to listview
+    private void initList() {
+        listStory = new ArrayList<>();
+        int accountId = getIntent().getIntExtra("Id", 0);
+        List<AccountStory> listStoryId = db.accountStoryDAO().getAllStoryIdByAccountId(accountId);
+        for (AccountStory accountStory : listStoryId) {
+            Story story = db.storyDAO().getStoryById(accountStory.storyId);
+            listStory.add(story);
+        }
+        adapterStory = new AdapterStory(getApplicationContext(), listStory);
+        lvFavoriteStory.setAdapter(adapterStory);
     }
 
     //Show delete dialog
@@ -72,14 +85,16 @@ public class AdminActivity extends AppCompatActivity {
         btnYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int accountId = getIntent().getIntExtra("Id", 0);
                 int storyId = listStory.get(pos).id;
-                Story story = db.storyDAO().getStoryById(storyId);
-                db.storyDAO().delete(story);
+                AccountStory accountStory = db.accountStoryDAO().getAccountStoryById(accountId, storyId);
+                db.accountStoryDAO().delete(accountStory);
                 //Update activity
-                Intent intent = new Intent(AdminActivity.this, AdminActivity.class);
+                Intent intent = new Intent(FavoriteStoryActivity.this, FavoriteStoryActivity.class);
+                intent.putExtra("Id", accountId);
                 finish();
                 startActivity(intent);
-                Toast.makeText(AdminActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FavoriteStoryActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -91,22 +106,5 @@ public class AdminActivity extends AppCompatActivity {
         });
 
         dialog.show();
-    }
-
-    //Add data to listview
-    private void initList() {
-        listStory = new ArrayList<>();
-        List<Story> storyList = db.storyDAO().getAllStory();
-
-        for (Story story : storyList) {
-            int id = story.id;
-            String title = story.title;
-            String content = story.content;
-            String image = story.image;
-
-            listStory.add(new Story(id, title, content, image));
-            adapterStory = new AdapterStory(getApplicationContext(), listStory);
-            listView.setAdapter(adapterStory);
-        }
     }
 }

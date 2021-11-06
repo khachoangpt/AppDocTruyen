@@ -21,6 +21,9 @@
             android:name=".MediaActivity"
             android:exported="true" />
         <activity
+            android:name=".IntroScreenActivity"
+            android:exported="true" />
+        <activity
             android:name=".SearchActivity"
             android:exported="true" />
         <activity android:name=".MainActivity" />

@@ -8,20 +8,21 @@
     android:orientation="vertical">
 
     <TextView
-        android:text="Thông Tin"
-        android:textSize="40dp"
-        android:layout_gravity="center"
-        android:textStyle="bold"
-        android:textColor="#2196F3"
-        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></TextView>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="Thông Tin "
+        android:textColor="#2F516C"
+        android:textSize="40dp"
+        android:textStyle="bold"></TextView>
+
     <TextView
         android:id="@+id/tv_information"
-        android:padding="20dp"
-        android:textColor="#E10404"
-        android:textSize="25sp"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></TextView>
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:padding="20dp"
+        android:textColor="#1C0C0C"
+        android:textSize="25sp"></TextView>
 </LinearLayout>

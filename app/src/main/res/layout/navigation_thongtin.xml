@@ -5,16 +5,17 @@
     android:gravity="center">
 
     <LinearLayout
-        android:background="@drawable/images"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="150dp">
+        android:layout_height="150dp"
+        android:background="@drawable/images"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/user"></ImageView>
 
         <TextView
@@ -23,15 +24,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:text="name"
-            android:textColor="#EFEEE6"
-            android:textStyle="bold"></TextView>
-
-        <TextView
-            android:id="@+id/text_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:text="email"
             android:textColor="#EFEEE6"
             android:textStyle="bold"></TextView>
 

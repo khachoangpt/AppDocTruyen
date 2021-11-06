@@ -26,12 +26,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         android:background="#FFFFFF"
-                        app:title="Tủ Truyện"></androidx.appcompat.widget.Toolbar>
+                        app:title="AudioBook"></androidx.appcompat.widget.Toolbar>
 
                     <ViewFlipper
                         android:id="@+id/viewFlipper"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
+                        android:layout_height="250dp"
                         android:background="#FFFFFF"></ViewFlipper>
 
                     <LinearLayout
@@ -59,7 +59,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:text="Truyện đã thích"
+                            android:text="Thể loại"
                             android:textColor="#EF0303"
                             android:textSize="25sp"
                             android:textStyle="bold"></TextView>

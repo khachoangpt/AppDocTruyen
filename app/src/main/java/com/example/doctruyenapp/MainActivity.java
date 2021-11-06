@@ -111,34 +111,28 @@ public class MainActivity extends AppCompatActivity {
         });
 //
 //        //Click item event for listview category
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                if (position == 0) { //Upload story
-//                    if (role == 2) {
-//                        //Send id account to AdminActivity
-//                        Intent intent = new Intent(MainActivity.this, AdminActivity.class);
-//                        intent.putExtra("Id", id);
-//                        startActivity(intent);
-//                    } else {
-//                        Toast.makeText(MainActivity.this, "Bạn không có quyền thêm truyện", Toast.LENGTH_SHORT).show();
-//                    }
-//                } else if (position == 1) {
-//                    //Send id account to AdminActivity
-//                    Intent intent = new Intent(MainActivity.this, FavoriteStoryActivity.class);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                if (position == 0) {
+                    //Send id account to AdminActivity
+                    // Intent intent = new Intent(MainActivity.this, FavoriteStoryActivity.class);
 //                    intent.putExtra("Id", id);
 //                    startActivity(intent);
-//                } else if (position == 2) { //Move to content screen
-//                    Intent intent = new Intent(MainActivity.this, InfoActivity.class);
-//                    startActivity(intent);
-//                } else if (position == 3) { //Logout
-//                    finish();
-//                }
-//            }
-//        });
-//    }
-//
+                } else if (position == 1) { //Move to content screen
+                    Intent intent = new Intent(MainActivity.this, InfoActivity.class);
+                    startActivity(intent);
+                } else if (position == 2) { //Logout
+                    PreferrenceUtils.saveJwt("" , getApplicationContext());
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
     }
+//
+
 
     //actionbar vs toolbar
     private void actionBar() {
@@ -163,10 +157,10 @@ public class MainActivity extends AppCompatActivity {
     private void actionViewFlipper() {
         //Array contain ads images
         ArrayList<String> listQuangCao = new ArrayList<>();
-        listQuangCao.add("https://toplist.vn/images/800px/rua-va-tho-230179.jpg");
-        listQuangCao.add("https://toplist.vn/images/800px/deo-chuong-cho-meo-230180.jpg");
-        listQuangCao.add("https://toplist.vn/images/800px/cu-cai-trang-230181.jpg");
-        listQuangCao.add("https://toplist.vn/images/800px/de-den-va-de-trang-230182.jpg");
+        listQuangCao.add("https://radiotoday.net/wp-content/uploads/2018/06/dua_tre_lac_loai_1_1.jpg");
+        listQuangCao.add("https://www.vinabook.com/images/detailed/191/P65346Mbia_truoc.jpg");
+        listQuangCao.add("https://bizweb.dktcdn.net/100/180/408/products/nu-si-thoi-gio-bui.jpg?v=1615989127707");
+        listQuangCao.add("https://www.khaitam.com/Data/Sites/1/Product/14845/bo-cong-anh-nho.png");
         //Import image to ImageView, ImageView to app
         for (int i = 0; i < listQuangCao.size(); i++) {
             ImageView imageView = new ImageView(getApplicationContext());
@@ -245,10 +239,9 @@ public class MainActivity extends AppCompatActivity {
     private void loadCategories() {
         //Category
         categoryArrayList = new ArrayList<>();
-        categoryArrayList.add(new Category("Thêm truyện", "https://i.ibb.co/vjPZvhY/add.png"));
-        categoryArrayList.add(new Category("Truyện của tôi", "https://i.ibb.co/D7J7CZS/book.png"));
-        categoryArrayList.add(new Category("Thông tin", "https://i.ibb.co/vVfFkQ5/information.png"));
-        categoryArrayList.add(new Category("Đăng Xuất","https://i.ibb.co/9Nn9byc/log-out.png"));
+        categoryArrayList.add(new Category("Sách yêu thích", "https://i.ibb.co/D7J7CZS/book.png"));
+        categoryArrayList.add(new Category("Thông tin ứng dụng", "https://i.ibb.co/vVfFkQ5/information.png"));
+        categoryArrayList.add(new Category("Đăng Xuất", "https://i.ibb.co/9Nn9byc/log-out.png"));
         adapterCategory = new AdapterCategory(this, R.layout.category, categoryArrayList);
         listView.setAdapter(adapterCategory);
     }
@@ -449,6 +442,9 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(t.getMessage().toString());
             }
         });
+    }
 
+    @Override
+    public void onBackPressed() {
     }
 }

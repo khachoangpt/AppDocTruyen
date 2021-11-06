@@ -129,11 +129,10 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword = findViewById(R.id.login_password);
         btnLogin = findViewById(R.id.login_btnLogin);
         btnRegister = findViewById(R.id.login_btnRegister);
-        if(PreferrenceUtils.getJwt(this) != null){
+        if(PreferrenceUtils.getJwt(this) != null && !PreferrenceUtils.getJwt(this).isEmpty()){
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
         }
     }
-
 
 }

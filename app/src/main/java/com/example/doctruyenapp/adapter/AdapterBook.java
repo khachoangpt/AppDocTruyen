@@ -40,7 +40,7 @@ public class AdapterBook extends BaseAdapter {
 
     //filter
     public void filterList(ArrayList<Book> filterList) {
-        listBook = filterList;
+        this.listBook = filterList;
         notifyDataSetChanged();
     }
 

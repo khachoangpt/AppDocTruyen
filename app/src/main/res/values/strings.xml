@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Truyện hay</string>
+    <string name="app_name">AudioBook</string>
     <string name="app_login">Đăng Nhập</string>
     <string name="app_login_username">Tài khoản</string>
     <string name="app_login_password">Mật khẩu</string>

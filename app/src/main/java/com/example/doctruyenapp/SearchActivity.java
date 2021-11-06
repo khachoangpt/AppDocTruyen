@@ -1,9 +1,10 @@
 package com.example.doctruyenapp;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static java.util.Comparator.comparingLong;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,44 +12,51 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.doctruyenapp.adapter.AdapterBook;
-
+import com.example.doctruyenapp.api.ApiService;
 import com.example.doctruyenapp.model.Book;
+import com.example.doctruyenapp.model.ErrorException;
+import com.example.doctruyenapp.utils.PreferrenceUtils;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SearchActivity extends AppCompatActivity {
 
     ListView listviewSearch;
     EditText edtSearch;
-    ArrayList<Book> listBook;
-    ArrayList<Book> listSearch;
+    ArrayList<Book> listHistorySearch;
     AdapterBook adapterBook;
-  //  AppDatabase db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
-       // db = AppDatabase.getInstance(this);
-
         listviewSearch = findViewById(R.id.listview);
         edtSearch = findViewById(R.id.edt_search);
 
-        //iniList();
+        initList();
 
         listviewSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-               // Intent intent = new Intent(SearchActivity.this, ContentActivity.class);
-                String title = listSearch.get(position).title;
-             //   String content = listSearch.get(position).content;
-//                intent.putExtra("tentruyen", title);
-//                intent.putExtra("noidung", content);
-//                startActivity(intent);
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(SearchActivity.this, MediaActivity.class);
+                intent.putExtra("id", listHistorySearch.get(i).getId());
+                intent.putExtra("isSearch", true);
+                startActivity(intent);
             }
         });
 
@@ -73,37 +81,69 @@ public class SearchActivity extends AppCompatActivity {
 
     //Search
     private void filter(String text) {
-        listSearch.clear();
-
-        ArrayList<Book> filterList = new ArrayList<>();
-        for (Book item : listBook) {
-            if (item.title.toLowerCase().contains(text.toLowerCase())) {
-                //Add to filterList
-                filterList.add(item);
-
-                //Add to array
-                listSearch.add(item);
+        listHistorySearch.clear();
+        ApiService.apiService.searchBook(PreferrenceUtils.getJwt(this), text).enqueue(new Callback<List<Book>>() {
+            @Override
+            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
+                if (response.isSuccessful()) {
+                    listHistorySearch = (ArrayList<Book>) response.body();
+                    setupListView();
+                } else {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                    ErrorException errorException = null;
+                    try {
+                        errorException = objectMapper.readValue(response.errorBody().string(), ErrorException.class);
+                        System.out.println(errorException.toString());
+                        Toast.makeText(SearchActivity.this, errorException.getErrors().get(0), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        }
-        adapterBook.filterList(filterList);
+
+            @Override
+            public void onFailure(Call<List<Book>> call, Throwable t) {
+                Toast.makeText(SearchActivity.this, "Server is busy! Please try later!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     //Get data and add to listview
-//    private void iniList() {
-//        listBook = new ArrayList<>();
-//        listSearch = new ArrayList<>();
-//
-//        List<Book> BookList = db.BookDAO().getAllBook();
-//
-//        for (Book Book : BookList) {
-//            int id = Book.id;
-//            String title = Book.title;
-//            String content = Book.content;
-//            String image = Book.image;
-//            listBook.add(new Book(id, title, content, image));
-//            listSearch.add(new Book(id, title, content, image));
-//            adapterBook = new AdapterBook(getApplicationContext(), listBook);
-//            listviewSearch.setAdapter(adapterBook);
-//        }
-//    }
+    private void initList() {
+        listHistorySearch = new ArrayList<>();
+        ApiService.apiService.getHistory(PreferrenceUtils.getJwt(this)).enqueue(new Callback<List<Book>>() {
+            @Override
+            public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
+                if (response.isSuccessful()) {
+                    listHistorySearch = response.body().stream()
+                            .collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparingLong(Book::getId))), ArrayList::new));
+                    setupListView();
+                } else {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                    ErrorException errorException = null;
+                    try {
+                        errorException = objectMapper.readValue(response.errorBody().string(), ErrorException.class);
+                        System.out.println(errorException.toString());
+                        Toast.makeText(SearchActivity.this, errorException.getErrors().get(0), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Book>> call, Throwable t) {
+                Toast.makeText(SearchActivity.this, "Server is busy! Please try later!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void setupListView() {
+        adapterBook = new AdapterBook(getApplicationContext(), listHistorySearch);
+        listviewSearch.setAdapter(adapterBook);
+    }
 }

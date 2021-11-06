@@ -33,7 +33,7 @@ public interface ApiService {
 
 
     ApiService apiService = new Retrofit.Builder()
-            .baseUrl("http://7fee-14-232-146-165.ngrok.io/api/v1/")
+            .baseUrl("http://4960-14-232-146-165.ngrok.io/api/v1/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
@@ -53,11 +53,17 @@ public interface ApiService {
     @GET("book/newest")
     Call<List<Book>> getNewestBook(@Header("Authorization") String token);
 
+    @GET("search/history")
+    Call<List<Book>> getHistory(@Header("Authorization") String token);
+
+    @GET("book/search")
+    Call<List<Book>> searchBook(@Header("Authorization") String token, @Query("title") String title);
+
     @GET("book/liked")
     Call<List<Book>> getLikedBook(@Header("Authorization") String token);
 
     @GET("book/{id}")
-    Call<Book> getBook(@Header("Authorization") String token, @Path("id") long id);
+    Call<Book> getBook(@Header("Authorization") String token, @Path("id") long id, @Query("search") Boolean search);
 
     @POST("book/like")
     Call<String> likeBook(@Header("Authorization") String token, @Query("id") long id);

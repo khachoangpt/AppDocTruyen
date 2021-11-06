@@ -1,5 +1,5 @@
-package com.example.doctruyenapp;
-
+//package com.example.doctruyenapp;
+//
 //public class FavoriteStoryActivity extends AppCompatActivity {
 //
 //    AppDatabase db;

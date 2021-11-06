@@ -57,31 +57,60 @@ public class MediaActivity extends AppCompatActivity {
     private void initViews() {
         Intent intent = getIntent();
         long id = intent.getLongExtra("id", 1);
-        ApiService.apiService.getBook(PreferrenceUtils.getJwt(this), id).enqueue(new Callback<Book>() {
-            @Override
-            public void onResponse(Call<Book> call, Response<Book> response) {
-                if (response.isSuccessful()) {
-                    book = response.body();
-                    setIconLike();
-                } else {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                    ErrorException errorException = null;
-                    try {
-                        errorException = objectMapper.readValue(response.errorBody().string(), ErrorException.class);
-                        System.out.println(errorException.toString());
-                        Toast.makeText(MediaActivity.this, errorException.getErrors().get(0), Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        if (intent.getBooleanExtra("isSearch", false)) {
+            ApiService.apiService.getBook(PreferrenceUtils.getJwt(this), id, true).enqueue(new Callback<Book>() {
+                @Override
+                public void onResponse(Call<Book> call, Response<Book> response) {
+                    if (response.isSuccessful()) {
+                        book = response.body();
+                        setIconLike();
+                    } else {
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                        ErrorException errorException = null;
+                        try {
+                            errorException = objectMapper.readValue(response.errorBody().string(), ErrorException.class);
+                            System.out.println(errorException.toString());
+                            Toast.makeText(MediaActivity.this, errorException.getErrors().get(0), Toast.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<Book> call, Throwable t) {
-                Toast.makeText(MediaActivity.this, "Server is busy! Please try later!", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<Book> call, Throwable t) {
+                    Toast.makeText(MediaActivity.this, "Server is busy! Please try later!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            ApiService.apiService.getBook(PreferrenceUtils.getJwt(this), id, false).enqueue(new Callback<Book>() {
+                @Override
+                public void onResponse(Call<Book> call, Response<Book> response) {
+                    if (response.isSuccessful()) {
+                        book = response.body();
+                        setIconLike();
+                    } else {
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                        ErrorException errorException = null;
+                        try {
+                            errorException = objectMapper.readValue(response.errorBody().string(), ErrorException.class);
+                            System.out.println(errorException.toString());
+                            Toast.makeText(MediaActivity.this, errorException.getErrors().get(0), Toast.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Book> call, Throwable t) {
+                    Toast.makeText(MediaActivity.this, "Server is busy! Please try later!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
     }
 
     private void initPlayer() {
@@ -182,7 +211,13 @@ public class MediaActivity extends AppCompatActivity {
     protected void onDestroy() {
         releasePlayer();
         super.onDestroy();
+    }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(MediaActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void releasePlayer() {

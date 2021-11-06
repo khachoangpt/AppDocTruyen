@@ -44,15 +44,9 @@ public class AdapterInformation extends BaseAdapter {
     public View getView(int i, View convertView, ViewGroup viewGroup) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(layout, null);
-
         TextView txtAccountName = (TextView) convertView.findViewById(R.id.text_fullname);
-        TextView txtEmail = (TextView) convertView.findViewById(R.id.text_email);
-
         Account account = accountList.get(i);
-
         txtAccountName.setText(account.username);
-        txtEmail.setText(account.email);
-
         return convertView;
     }
 }

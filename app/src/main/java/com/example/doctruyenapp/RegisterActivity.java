@@ -10,21 +10,32 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import com.example.doctruyenapp.api.ApiService;
 import com.example.doctruyenapp.dao.AccountDAO;
-import com.example.doctruyenapp.database.AppDatabase;
+//import com.example.doctruyenapp.database.AppDatabase;
 import com.example.doctruyenapp.model.Account;
+import com.example.doctruyenapp.model.ErrorException;
+import com.example.doctruyenapp.utils.PreferrenceUtils;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText edtUsername, edtPassword, edtEmail;
     Button btnReturnLogin, btnRegister;
-    AppDatabase db;
+    //  AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        db = AppDatabase.getInstance(this);
+        //   db = AppDatabase.getInstance(this);
 
         mapping();
 
@@ -42,16 +53,43 @@ public class RegisterActivity extends AppCompatActivity {
                 String username = edtUsername.getText().toString();
                 String password = edtPassword.getText().toString();
                 String email = edtEmail.getText().toString();
-                if(username.equals("")||password.equals("")||email.equals("")){
-                    Toast.makeText(RegisterActivity.this, "Chưa nhập đủ thông tin", Toast.LENGTH_SHORT).show();
-                }else{
-                    int role = 1;
-                    Account a = new Account(username, password, email, role);
-                    db.accountDAO().addAccount(a);
-                    Toast.makeText(RegisterActivity.this, "Register Successful", Toast.LENGTH_SHORT).show();
+                if (username.equals("") || password.equals("") || email.equals("")) {
+                    Toast.makeText(RegisterActivity.this, "Please fill all the feild", Toast.LENGTH_SHORT).show();
+                } else {
+                    Account a = new Account(username, password, email, "USER");
+                    doSignUp(a);
+
+                }
+            }
+        });
+    }
+
+
+    private void doSignUp(Account account) {
+        ApiService.apiService.signUp(account).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(RegisterActivity.this, "Register Successfully!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     startActivity(intent);
+                } else {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                    ErrorException errorException = null;
+                    try {
+                        errorException = objectMapper.readValue(response.errorBody().string(), ErrorException.class);
+                        System.out.println(errorException.toString());
+                        Toast.makeText(RegisterActivity.this, errorException.getErrors().get(0), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(RegisterActivity.this, "Server is busy! Please try later!", Toast.LENGTH_SHORT).show();
             }
         });
     }

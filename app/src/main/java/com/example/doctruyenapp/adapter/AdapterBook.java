@@ -9,38 +9,38 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.doctruyenapp.R;
-import com.example.doctruyenapp.model.Story;
+import com.example.doctruyenapp.model.Book;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class AdapterStory extends BaseAdapter {
+public class AdapterBook extends BaseAdapter {
     private Context context;
-    private ArrayList<Story> listStory;
+    private ArrayList<Book> listBook;
 
-    public AdapterStory(Context context, ArrayList<Story> listStory) {
+    public AdapterBook(Context context, ArrayList<Book> listBook) {
         this.context = context;
-        this.listStory = listStory;
+        this.listBook = listBook;
     }
 
     @Override
     public int getCount() {
-        return listStory.size();
+        return listBook.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return listStory.get(i);
+        return listBook.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return listStory.get(i).id;
+        return listBook.get(i).id;
     }
 
     //filter
-    public void filterList(ArrayList<Story> filterList) {
-        listStory = filterList;
+    public void filterList(ArrayList<Book> filterList) {
+        listBook = filterList;
         notifyDataSetChanged();
     }
 
@@ -61,10 +61,10 @@ public class AdapterStory extends BaseAdapter {
         viewHolder.imgStory = convertView.findViewById(R.id.imgNewTruyen);
         convertView.setTag(viewHolder);
 
-        Story story = (Story) getItem(i);
-        viewHolder.txtStoryName.setText(story.title);
+        Book book = (Book) getItem(i);
+        viewHolder.txtStoryName.setText(book.title);
 
-        Picasso.get().load(story.image).placeholder(R.drawable.ic_load).error(R.drawable.ic_baseline_image_24).into(viewHolder.imgStory);
+        Picasso.get().load(book.getImage()).placeholder(R.drawable.ic_load).error(R.drawable.ic_baseline_image_24).into(viewHolder.imgStory);
 
         return convertView;
     }

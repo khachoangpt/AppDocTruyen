@@ -9,9 +9,9 @@ public class Category {
     public String categoryName;
 
     @ColumnInfo(name = "image")
-    public int image;
+    public String image;
 
-    public Category(String categoryName, int image) {
+    public Category(String categoryName, String image) {
         this.categoryName = categoryName;
         this.image = image;
     }

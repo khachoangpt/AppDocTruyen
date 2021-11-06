@@ -6,17 +6,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "account_story",
-        foreignKeys = {
-                @ForeignKey(entity = Account.class,
-                        parentColumns = "accountId",
-                        childColumns = "accountId",
-                        onDelete = ForeignKey.CASCADE),
-                @ForeignKey(entity = Story.class,
-                        parentColumns = "id",
-                        childColumns = "storyId",
-                        onDelete = ForeignKey.CASCADE)
-        })
+@Entity
 public class AccountStory {
     @PrimaryKey(autoGenerate = true)
     public int id;

@@ -12,10 +12,9 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.example.doctruyenapp.adapter.AdapterStory;
-import com.example.doctruyenapp.dao.StoryDAO;
-import com.example.doctruyenapp.database.AppDatabase;
-import com.example.doctruyenapp.model.Story;
+import com.example.doctruyenapp.adapter.AdapterBook;
+
+import com.example.doctruyenapp.model.Book;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,32 +23,32 @@ public class SearchActivity extends AppCompatActivity {
 
     ListView listviewSearch;
     EditText edtSearch;
-    ArrayList<Story> listStory;
-    ArrayList<Story> listSearch;
-    AdapterStory adapterStory;
-    AppDatabase db;
+    ArrayList<Book> listBook;
+    ArrayList<Book> listSearch;
+    AdapterBook adapterBook;
+  //  AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        db = AppDatabase.getInstance(this);
+       // db = AppDatabase.getInstance(this);
 
         listviewSearch = findViewById(R.id.listview);
         edtSearch = findViewById(R.id.edt_search);
 
-        iniList();
+        //iniList();
 
         listviewSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent(SearchActivity.this, ContentActivity.class);
+               // Intent intent = new Intent(SearchActivity.this, ContentActivity.class);
                 String title = listSearch.get(position).title;
-                String content = listSearch.get(position).content;
-                intent.putExtra("tentruyen", title);
-                intent.putExtra("noidung", content);
-                startActivity(intent);
+             //   String content = listSearch.get(position).content;
+//                intent.putExtra("tentruyen", title);
+//                intent.putExtra("noidung", content);
+//                startActivity(intent);
             }
         });
 
@@ -76,8 +75,8 @@ public class SearchActivity extends AppCompatActivity {
     private void filter(String text) {
         listSearch.clear();
 
-        ArrayList<Story> filterList = new ArrayList<>();
-        for (Story item : listStory) {
+        ArrayList<Book> filterList = new ArrayList<>();
+        for (Book item : listBook) {
             if (item.title.toLowerCase().contains(text.toLowerCase())) {
                 //Add to filterList
                 filterList.add(item);
@@ -86,25 +85,25 @@ public class SearchActivity extends AppCompatActivity {
                 listSearch.add(item);
             }
         }
-        adapterStory.filterList(filterList);
+        adapterBook.filterList(filterList);
     }
 
     //Get data and add to listview
-    private void iniList() {
-        listStory = new ArrayList<>();
-        listSearch = new ArrayList<>();
-
-        List<Story> storyList = db.storyDAO().getAllStory();
-
-        for (Story story : storyList) {
-            int id = story.id;
-            String title = story.title;
-            String content = story.content;
-            String image = story.image;
-            listStory.add(new Story(id, title, content, image));
-            listSearch.add(new Story(id, title, content, image));
-            adapterStory = new AdapterStory(getApplicationContext(), listStory);
-            listviewSearch.setAdapter(adapterStory);
-        }
-    }
+//    private void iniList() {
+//        listBook = new ArrayList<>();
+//        listSearch = new ArrayList<>();
+//
+//        List<Book> BookList = db.BookDAO().getAllBook();
+//
+//        for (Book Book : BookList) {
+//            int id = Book.id;
+//            String title = Book.title;
+//            String content = Book.content;
+//            String image = Book.image;
+//            listBook.add(new Book(id, title, content, image));
+//            listSearch.add(new Book(id, title, content, image));
+//            adapterBook = new AdapterBook(getApplicationContext(), listBook);
+//            listviewSearch.setAdapter(adapterBook);
+//        }
+//    }
 }

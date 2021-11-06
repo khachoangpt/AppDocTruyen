@@ -18,10 +18,10 @@
             android:name=".InfoActivity"
             android:exported="true" />
         <activity
-            android:name=".MediaActivity"
+            android:name=".LoginActivity"
             android:exported="true" />
         <activity
-            android:name=".IntroScreenActivity"
+            android:name=".MediaActivity"
             android:exported="true" />
         <activity
             android:name=".SearchActivity"
@@ -29,8 +29,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".RegisterActivity" />
         <activity
-            android:name=".LoginActivity"
-            android:exported="true">
+            android:name=".IntroScreenActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

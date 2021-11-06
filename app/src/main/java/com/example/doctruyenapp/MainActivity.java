@@ -1,15 +1,6 @@
 package com.example.doctruyenapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.room.Room;
-
-import android.app.Dialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +9,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -26,17 +16,19 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-//import com.example.doctruyenapp.adapter.AdapterBook;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.example.doctruyenapp.adapter.AdapterBook;
 import com.example.doctruyenapp.adapter.AdapterCategory;
 import com.example.doctruyenapp.adapter.AdapterInformation;
 import com.example.doctruyenapp.api.ApiService;
-import com.example.doctruyenapp.dao.StoryDAO;
-//import com.example.doctruyenapp.database.AppDatabase;
 import com.example.doctruyenapp.model.Account;
-import com.example.doctruyenapp.model.AccountStory;
-import com.example.doctruyenapp.model.Category;
 import com.example.doctruyenapp.model.Book;
+import com.example.doctruyenapp.model.Category;
 import com.example.doctruyenapp.model.ErrorException;
 import com.example.doctruyenapp.utils.PreferrenceUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;

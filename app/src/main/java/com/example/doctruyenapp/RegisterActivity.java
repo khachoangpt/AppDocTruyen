@@ -8,14 +8,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
 import com.example.doctruyenapp.api.ApiService;
-import com.example.doctruyenapp.dao.AccountDAO;
-//import com.example.doctruyenapp.database.AppDatabase;
 import com.example.doctruyenapp.model.Account;
 import com.example.doctruyenapp.model.ErrorException;
-import com.example.doctruyenapp.utils.PreferrenceUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

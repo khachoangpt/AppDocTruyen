@@ -25,6 +25,9 @@
             android:name=".LoginActivity"
             android:exported="true" />
         <activity
+            android:name=".BookCategoryActivity"
+            android:exported="true" />
+        <activity
             android:name=".MediaActivity"
             android:exported="true" />
         <activity

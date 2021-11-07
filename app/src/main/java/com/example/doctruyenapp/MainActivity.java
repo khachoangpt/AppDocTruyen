@@ -22,7 +22,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -73,11 +72,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-        rvCategory = findViewById(R.id.rvCategory);
-        bookCategoryArrayList = new ArrayList<>();
-        bookCategoryAdapter = new BookCategoryAdapter(bookCategoryArrayList, this);
-        rvCategory.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        rvCategory.setAdapter(bookCategoryAdapter);
+
     }
 
     //actionbar vs toolbar
@@ -97,13 +92,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //Method for Ads with ViewFlipper
-
 
     private void actionViewFlipper() {
         //Array contain ads images
         ArrayList<String> listQuangCao = new ArrayList<>();
-        listQuangCao.add("https://radiotoday.net/wp-content/uploads/2018/06/dua_tre_lac_loai_1_1.jpg");
         listQuangCao.add("https://www.vinabook.com/images/detailed/191/P65346Mbia_truoc.jpg");
         listQuangCao.add("https://bizweb.dktcdn.net/100/180/408/products/nu-si-thoi-gio-bui.jpg?v=1615989127707");
         listQuangCao.add("https://www.khaitam.com/Data/Sites/1/Product/14845/bo-cong-anh-nho.png");
@@ -118,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             viewFlipper.addView(imageView);
         }
         //Config auto run for viewFlipper in 4 second
-        viewFlipper.setFlipInterval(4000);
+        viewFlipper.setFlipInterval(3000);
         //run auto viewFlipper
         viewFlipper.setAutoStart(true);
         //Call animation for IN and OUT ads
@@ -140,20 +132,14 @@ public class MainActivity extends AppCompatActivity {
         rvCategory = findViewById(R.id.rvCategory);
         lnCategory = findViewById(R.id.lnCategory);
 
-//        bookCategoryArrayList = new ArrayList<>();
-//        bookCategoryAdapter = new BookCategoryAdapter(bookCategoryArrayList, this);
-//        rvCategory.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-//        rvCategory.setAdapter(bookCategoryAdapter);
-
         loadNewest();
-   //     setUpBookCategory();
+        setUpBookCategory();
         loadAccountInfo();
         loadBookCategory();
         loadCategories();
         actionBar();
         actionViewFlipper();
 
-        //rvCategory.setAdapter(new BookCategoryAdapter(this));
 
         listViewNew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -163,18 +149,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-//        //Click item event for listview
 
-//        rvCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Intent intent = new Intent(MainActivity.this, MediaActivity.class);
-//                intent.putExtra("id", favoriteBookList.get(i).getId());
-//                startActivity(intent);
-//            }
-//        });
-//
-//        //Click item event for listview category
+        //Click item event for listview category
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -195,8 +171,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     private void loadCategories() {
@@ -210,14 +184,12 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapterCategory);
     }
 
-    //
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.mymenu, menu);
         return true;
     }
 
-    //
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         //Click search icon move to SearchActivity
@@ -261,7 +233,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-
         ApiService.apiService.isTokenValidation(PreferrenceUtils.getJwt(getApplicationContext())).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
@@ -317,20 +288,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpBookCategory() {
-
-
-//        bookCategoryAdapter = new BookCategoryAdapter(bookCategoryArrayList, this);
-//        rvCategory.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-//        rvCategory.setAdapter(bookCategoryAdapter);
-//        rvCategory.setHasFixedSize(true);
-//        rvCategory.setItemAnimator(new DefaultItemAnimator());
-
+        rvCategory = findViewById(R.id.rvCategory);
+        bookCategoryArrayList = new ArrayList<>();
+        bookCategoryAdapter = new BookCategoryAdapter(bookCategoryArrayList, this);
+        rvCategory.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rvCategory.setAdapter(bookCategoryAdapter);
     }
 
-
     private void loadBookCategory() {
-
-
         ApiService.apiService.getAllCategory(PreferrenceUtils.getJwt(this)).enqueue(new Callback<List<BookCategory>>() {
             @Override
             public void onResponse(Call<List<BookCategory>> call, Response<List<BookCategory>> response) {
@@ -338,10 +303,6 @@ public class MainActivity extends AppCompatActivity {
                     bookCategoryArrayList.clear();
                     bookCategoryArrayList.addAll(response.body());
                     bookCategoryAdapter.notifyDataSetChanged();
-                    System.out.println("category Lsit:" + bookCategoryArrayList.size());
-                    //bookCategoryAdapter.setBookCategories(bookCategoryArrayList);
-
-
                 } else {
                     ObjectMapper objectMapper = new ObjectMapper();
                     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -396,7 +357,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     @Override
     public void onBackPressed() {

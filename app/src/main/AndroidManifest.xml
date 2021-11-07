@@ -19,6 +19,9 @@
             android:name=".InfoActivity"
             android:exported="true" />
         <activity
+            android:name=".AllBookActivity"
+            android:exported="true" />
+        <activity
             android:name=".LoginActivity"
             android:exported="true" />
         <activity

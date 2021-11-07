@@ -2,6 +2,7 @@ package com.example.doctruyenapp.api;
 
 import com.example.doctruyenapp.model.Account;
 import com.example.doctruyenapp.model.Book;
+import com.example.doctruyenapp.model.BookCategory;
 import com.example.doctruyenapp.utils.PreferrenceUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -33,7 +34,7 @@ public interface ApiService {
 
 
     ApiService apiService = new Retrofit.Builder()
-            .baseUrl("http://d178-14-232-146-165.ngrok.io/api/v1/")
+            .baseUrl("http://aaac-14-232-146-165.ngrok.io/api/v1/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
@@ -65,6 +66,15 @@ public interface ApiService {
     @GET("book/liked")
     Call<List<Book>> getLikedBook(@Header("Authorization") String token);
 
+    @GET("book")
+    Call<List<Book>> getAllBook(@Header("Authorization") String token);
+
+    @GET("book/category")
+    Call<List<Book>> getAllBookByCategory(@Header("Authorization") String token, @Query("id") long id);
+
+    @GET("category")
+    Call<List<BookCategory>> getAllCategory(@Header("Authorization") String token);
+
     @GET("book/{id}")
     Call<Book> getBook(@Header("Authorization") String token, @Path("id") long id, @Query("search") Boolean search);
 
@@ -74,10 +84,7 @@ public interface ApiService {
     @GET("book/likes")
     Call<Long> countLike(@Header("Authorization") String token, @Query("id") long id);
 
-
     @GET("book/isLike")
     Call<Boolean> isLikeBook(@Header("Authorization") String token, @Query("id") long id);
 
-
 }
-////

@@ -8,7 +8,7 @@
     tools:context=".FavoriteBookActivity">
 
     <TextView
-        android:text="Sách đã thích"
+        android:text="Sách yêu thích"
         android:textSize="40dp"
         android:layout_gravity="center"
         android:textStyle="bold"

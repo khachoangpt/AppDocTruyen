@@ -4,21 +4,13 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "account")
+@Entity
 public class Account {
-    @PrimaryKey(autoGenerate = true)
+
     public Long id;
-
-    @ColumnInfo(name = "username")
     public String username;
-
-    @ColumnInfo(name = "password")
     public String password;
-
-    @ColumnInfo(name = "email")
     public String email;
-
-    @ColumnInfo(name = "role")
     public String role;
 
     public Account() {

@@ -157,10 +157,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 if (position == 0) {
-                    //Send id account to AdminActivity
-                    // Intent intent = new Intent(MainActivity.this, FavoriteStoryActivity.class);
-//                    intent.putExtra("Id", id);
-//                    startActivity(intent);
+                    Intent intent = new Intent(MainActivity.this, FavoriteBookActivity.class);
+                    startActivity(intent);
                 } else if (position == 1) { //Move to content screen
                     Intent intent = new Intent(MainActivity.this, InfoActivity.class);
                     startActivity(intent);

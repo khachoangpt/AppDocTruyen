@@ -12,9 +12,9 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.DocTruyenApp">
-<!--        <activity-->
-<!--            android:name=".FavoriteStoryActivity"-->
-<!--            android:exported="false" />-->
+        <activity
+            android:name=".FavoriteBookActivity"
+            android:exported="false" />
         <activity
             android:name=".InfoActivity"
             android:exported="true" />

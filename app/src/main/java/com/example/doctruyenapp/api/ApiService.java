@@ -33,7 +33,7 @@ public interface ApiService {
 
 
     ApiService apiService = new Retrofit.Builder()
-            .baseUrl("http://4960-14-232-146-165.ngrok.io/api/v1/")
+            .baseUrl("http://d178-14-232-146-165.ngrok.io/api/v1/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
@@ -49,6 +49,9 @@ public interface ApiService {
 
     @GET("account")
     Call<Account> getAccountInfo(@Header("Authorization") String token);
+
+    @GET("account/checkToken")
+    Call<Boolean> isTokenValidation(@Header("Authorization") String token);
 
     @GET("book/newest")
     Call<List<Book>> getNewestBook(@Header("Authorization") String token);

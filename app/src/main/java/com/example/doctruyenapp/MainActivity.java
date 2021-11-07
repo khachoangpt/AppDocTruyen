@@ -51,8 +51,6 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     ListView listView, listViewNew, listViewInfor, listViewFavorite;
     DrawerLayout drawerLayout;
-    String email, accountName;
-    int id, role;
     ArrayList<Book> bookArrayList;
     ArrayList<Book> favoriteBookList;
     AdapterBook adapterNewBook;
@@ -62,77 +60,12 @@ public class MainActivity extends AppCompatActivity {
     AdapterCategory adapterCategory;
     AdapterInformation adapterInformation;
 
-    //    AppDatabase db;
-//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//
-//        db = AppDatabase.getInstance(this);
-//
-        //receive data from LoginActivity
-//        role = getIntent().getIntExtra("phanquyen", 0);
-//        id = getIntent().getIntExtra("id", 0);
-//        accountName = getIntent().getStringExtra("tentk");
-//        email = getIntent().getStringExtra("email");
-//
-        mapping();
-
-        actionBar();
-        actionViewFlipper();
-//
-//        //Click item event for listview new story
-        listViewNew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(MainActivity.this, MediaActivity.class);
-                intent.putExtra("id", bookArrayList.get(i).getId());
-                startActivity(intent);
-            }
-        });
-//
-//        listViewNew.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                showLikeDialog(position);
-//                return true;
-//            }
-//        });
-//
-//        //Click item event for listview favorite
-        listViewFavorite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(MainActivity.this, MediaActivity.class);
-                intent.putExtra("id", favoriteBookList.get(i).getId());
-                startActivity(intent);
-            }
-        });
-//
-//        //Click item event for listview category
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                if (position == 0) {
-                    //Send id account to AdminActivity
-                    // Intent intent = new Intent(MainActivity.this, FavoriteStoryActivity.class);
-//                    intent.putExtra("Id", id);
-//                    startActivity(intent);
-                } else if (position == 1) { //Move to content screen
-                    Intent intent = new Intent(MainActivity.this, InfoActivity.class);
-                    startActivity(intent);
-                } else if (position == 2) { //Logout
-                    PreferrenceUtils.saveJwt("" , getApplicationContext());
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        });
+        initViews();
     }
-//
-
 
     //actionbar vs toolbar
     private void actionBar() {
@@ -198,42 +131,47 @@ public class MainActivity extends AppCompatActivity {
         loadAccountInfo();
         loadLiked();
         loadCategories();
+        actionBar();
+        actionViewFlipper();
 
-//        List<Story> storyList = db.storyDAO().getThreeNewestStory();
-//        for (Story story : storyList) {
-//            storyArrayList.add(story);
-//        }
-
+        listViewNew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(MainActivity.this, MediaActivity.class);
+                intent.putExtra("id", bookArrayList.get(i).getId());
+                startActivity(intent);
+            }
+        });
+//        //Click item event for listview favorite
+        listViewFavorite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(MainActivity.this, MediaActivity.class);
+                intent.putExtra("id", favoriteBookList.get(i).getId());
+                startActivity(intent);
+            }
+        });
 //
-//        adapterNewBook = new AdapterBook(getApplicationContext(), this.bookArrayList);
-//        listViewNew.setAdapter(adapterNewBook);
-//        setListViewHeightBasedOnChildren(listViewNew);
-
-//        favoriteStoryList = new ArrayList<>();
-//        List<AccountStory> storyIdList = db.accountStoryDAO().getTopThreeStoryIdByAccountId(id);
-//        for (AccountStory accountStory : storyIdList) {
-//            int storyId = accountStory.storyId;
-//            Story story = db.storyDAO().getStoryById(storyId);
-//            favoriteStoryList.add(story);
-//        }
-//        adapterFavoriteStory = new AdapterBook(getApplicationContext(), favoriteStoryList);
-//        listViewFavorite.setAdapter(adapterFavoriteStory);
-//        setListViewHeightBasedOnChildren(listViewFavorite);
-
-        //Information
-//        accountArrayList = new ArrayList<>();
-//        accountArrayList.add(new Account(accountName, email));
-//        adapterInformation = new AdapterInformation(this, R.layout.navigation_thongtin, accountArrayList);
-//        listViewInfor.setAdapter(adapterInformation);
-//
-//        //Category
-//        categoryArrayList = new ArrayList<>();
-//        categoryArrayList.add(new Category("Thêm truyện", R.drawable.ic_baseline_create_24));
-//        categoryArrayList.add(new Category("Truyện của tôi", R.drawable.ic_baseline_book_24));
-//        categoryArrayList.add(new Category("Thông tin", R.drawable.ic_baseline_face_24));
-//        categoryArrayList.add(new Category("Đăng Xuất", R.drawable.ic_baseline_login_24));
-//        adapterCategory = new AdapterCategory(this, R.layout.category, categoryArrayList);
-//        listView.setAdapter(adapterCategory);
+//        //Click item event for listview category
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                if (position == 0) {
+                    //Send id account to AdminActivity
+                    // Intent intent = new Intent(MainActivity.this, FavoriteStoryActivity.class);
+//                    intent.putExtra("Id", id);
+//                    startActivity(intent);
+                } else if (position == 1) { //Move to content screen
+                    Intent intent = new Intent(MainActivity.this, InfoActivity.class);
+                    startActivity(intent);
+                } else if (position == 2) { //Logout
+                    PreferrenceUtils.saveJwt("", getApplicationContext());
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
     }
 
     private void loadCategories() {
@@ -268,56 +206,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //
-//    //Like dialog
-//    private void showLikeDialog(int pos) {
-//        //create obj dialog
-//        Dialog dialog = new Dialog(this);
-//        //add layout to dialog
-//        dialog.setContentView(R.layout.like_dialog);
-//        //disable outside click, click "No" to close dialog
-//        dialog.setCanceledOnTouchOutside(false);
-//
-//        //Mapping
-//        Button btnYes = dialog.findViewById(R.id.btnYes);
-//        Button btnNo = dialog.findViewById(R.id.btnNo);
-//
-//        btnYes.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int storyId = storyArrayList.get(pos).id;
-//                List<AccountStory> accountStories = db.accountStoryDAO().getAllStoryIdByAccountId(id);
-//                for (AccountStory accountStory : accountStories) {
-//                    if(storyId == accountStory.storyId) {
-//                        dialog.cancel();
-//                        Toast.makeText(MainActivity.this, "Bạn đã thích truyện này", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
-//                }
-//                db.accountStoryDAO().add(new AccountStory(id, storyId));
-//                //Update activity
-//                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-//                intent.putExtra("phanquyen", role);
-//                intent.putExtra("id", id);
-//                intent.putExtra("email",email);
-//                intent.putExtra("tentk", accountName);
-//                finish();
-//                startActivity(intent);
-//                Toast.makeText(MainActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//
-//        btnNo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dialog.cancel();
-//            }
-//        });
-//
-//        dialog.show();
-//    }
-//
     public void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
@@ -343,6 +231,29 @@ public class MainActivity extends AppCompatActivity {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
+
+    }
+
+    private void initViews() {
+
+        ApiService.apiService.isTokenValidation(PreferrenceUtils.getJwt(getApplicationContext())).enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.code() == 401) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    intent.putExtra("session", "expired");
+                    startActivity(intent);
+                    finish();
+                } else if (response.body()) {
+                    mapping();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Server is busy! Please try later!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -447,4 +358,5 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
     }
+
 }

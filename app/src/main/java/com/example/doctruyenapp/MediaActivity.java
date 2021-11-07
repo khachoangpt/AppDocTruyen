@@ -1,7 +1,6 @@
 package com.example.doctruyenapp;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.example.doctruyenapp.api.ApiService;
 import com.example.doctruyenapp.model.Book;
@@ -61,7 +59,11 @@ public class MediaActivity extends AppCompatActivity {
             ApiService.apiService.getBook(PreferrenceUtils.getJwt(this), id, true).enqueue(new Callback<Book>() {
                 @Override
                 public void onResponse(Call<Book> call, Response<Book> response) {
-                    if (response.isSuccessful()) {
+                    if (response.code() == 401) {
+                        Intent intent = new Intent(MediaActivity.this, LoginActivity.class);
+                        intent.putExtra("session", "expired");
+                        startActivity(intent);
+                    } else if (response.isSuccessful()) {
                         book = response.body();
                         setIconLike();
                     } else {

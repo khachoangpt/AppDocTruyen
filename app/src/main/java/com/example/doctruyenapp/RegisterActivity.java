@@ -24,17 +24,13 @@ import retrofit2.Response;
 public class RegisterActivity extends AppCompatActivity {
     EditText edtUsername, edtPassword, edtEmail;
     Button btnReturnLogin, btnRegister;
-    //  AppDatabase db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
-        //   db = AppDatabase.getInstance(this);
-
         mapping();
-
         btnReturnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

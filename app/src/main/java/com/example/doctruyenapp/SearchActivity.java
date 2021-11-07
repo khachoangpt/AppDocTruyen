@@ -85,7 +85,12 @@ public class SearchActivity extends AppCompatActivity {
         ApiService.apiService.searchBook(PreferrenceUtils.getJwt(this), text).enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
-                if (response.isSuccessful()) {
+                if (response.code() == 401) {
+                    Intent intent = new Intent(SearchActivity.this, LoginActivity.class);
+                    intent.putExtra("session", "expired");
+                    startActivity(intent);
+                    finish();
+                } else if (response.isSuccessful()) {
                     listHistorySearch = (ArrayList<Book>) response.body();
                     setupListView();
                 } else {
@@ -116,7 +121,12 @@ public class SearchActivity extends AppCompatActivity {
         ApiService.apiService.getHistory(PreferrenceUtils.getJwt(this)).enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
-                if (response.isSuccessful()) {
+                if (response.code() == 401) {
+                    Intent intent = new Intent(SearchActivity.this, LoginActivity.class);
+                    intent.putExtra("session", "expired");
+                    startActivity(intent);
+                    finish();
+                } else if (response.isSuccessful()) {
                     listHistorySearch = response.body().stream()
                             .collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparingLong(Book::getId))), ArrayList::new));
                     setupListView();

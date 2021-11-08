@@ -58,7 +58,7 @@ public class AllBookActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
-                Toast.makeText(AllBookActivity.this, "Server is busy! Please try later!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AllBookActivity.this, "Hệ thống bận!", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -81,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(RegisterActivity.this, "Server is busy! Please try later!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "Hệ thống bận!", Toast.LENGTH_SHORT).show();
             }
         });
     }

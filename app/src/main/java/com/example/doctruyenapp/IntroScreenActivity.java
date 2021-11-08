@@ -48,7 +48,7 @@ public class IntroScreenActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<Boolean> call, Throwable t) {
-                    Toast.makeText(IntroScreenActivity.this, "Server is busy! Please try later!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(IntroScreenActivity.this, "Hệ thống bận!", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {

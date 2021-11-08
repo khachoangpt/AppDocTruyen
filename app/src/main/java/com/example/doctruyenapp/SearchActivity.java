@@ -109,7 +109,7 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Book>> call, Throwable t) {
-                Toast.makeText(SearchActivity.this, "Server is busy! Please try later!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchActivity.this, "Hệ thống bận!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -146,7 +146,7 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Book>> call, Throwable t) {
-                Toast.makeText(SearchActivity.this, "Server is busy! Please try later!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchActivity.this, "Hệ thống bận!", Toast.LENGTH_SHORT).show();
             }
         });
 

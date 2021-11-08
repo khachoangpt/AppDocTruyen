@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Server is busy! Please try later!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Hệ thống bận!", Toast.LENGTH_SHORT).show();
             }
         });
 

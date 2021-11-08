@@ -3,6 +3,7 @@ package com.example.doctruyenapp.api;
 import com.example.doctruyenapp.model.Account;
 import com.example.doctruyenapp.model.Book;
 import com.example.doctruyenapp.model.BookCategory;
+import com.example.doctruyenapp.model.Comment;
 import com.example.doctruyenapp.utils.PreferrenceUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -34,7 +35,7 @@ public interface ApiService {
 
 
     ApiService apiService = new Retrofit.Builder()
-            .baseUrl("http://aaac-14-232-146-165.ngrok.io/api/v1/")
+            .baseUrl("https://moody-frog-15.loca.lt/api/v1/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
@@ -74,6 +75,13 @@ public interface ApiService {
 
     @GET("category")
     Call<List<BookCategory>> getAllCategory(@Header("Authorization") String token);
+
+    @GET("book/comment")
+    Call<List<Comment>> getAllComment(@Header("Authorization") String token, @Query("id") long id);
+
+    @POST("book/comment")
+    @Headers("Content-Type: application/json")
+    Call<String> createComment(@Header("Authorization") String token, @Body Comment comment);
 
     @GET("book/{id}")
     Call<Book> getBook(@Header("Authorization") String token, @Path("id") long id, @Query("search") Boolean search);

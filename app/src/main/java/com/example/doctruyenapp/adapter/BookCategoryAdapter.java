@@ -74,7 +74,7 @@ public class BookCategoryAdapter extends RecyclerView.Adapter<BookCategoryAdapte
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             imv = itemView.findViewById(R.id.imv_chap);
-            tv_title = itemView.findViewById(R.id.tv_title);
+            tv_title = itemView.findViewById(R.id.tvcmtUsername);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }

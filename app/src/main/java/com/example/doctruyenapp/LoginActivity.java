@@ -48,8 +48,12 @@ public class LoginActivity extends AppCompatActivity {
                 //Get username and password
                 String username = edtUsername.getText().toString();
                 String password = edtPassword.getText().toString();
-                doLogin(new Account(username, password));
+                if (username.equals("") || password.equals("")) {
+                    Toast.makeText(LoginActivity.this, "Vui lòng điền tất cả các trường", Toast.LENGTH_SHORT).show();
+                } else {
+                    doLogin(new Account(username, password));
 
+                }
             }
         });
     }
@@ -78,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "Server is busy! Please try later!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Hệ thống bận", Toast.LENGTH_SHORT).show();
             }
         });
     }

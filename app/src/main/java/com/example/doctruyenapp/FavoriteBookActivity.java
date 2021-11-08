@@ -56,7 +56,7 @@ public class FavoriteBookActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
-                Toast.makeText(FavoriteBookActivity.this, "Server is busy! Please try later!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FavoriteBookActivity.this, "Hệ thống bận!", Toast.LENGTH_SHORT).show();
             }
         });
 

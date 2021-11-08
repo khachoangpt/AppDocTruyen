@@ -82,8 +82,8 @@
                         app:layout_constraintTop_toTopOf="parent" />
                 </LinearLayout>
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
 
+        </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigationView"

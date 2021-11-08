@@ -47,7 +47,6 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         listviewSearch = findViewById(R.id.listview);
         edtSearch = findViewById(R.id.edt_search);
-
         initList();
 
         listviewSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {

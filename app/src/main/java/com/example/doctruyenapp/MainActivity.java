@@ -75,52 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //actionbar vs toolbar
-    private void actionBar() {
-        //Support method for toolbar
-        setSupportActionBar(toolbar);
-        //set button for actionbar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        toolbar.setNavigationIcon(android.R.drawable.ic_menu_sort_by_size);
-        //click event
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
-    }
-
-
-    private void actionViewFlipper() {
-        //Array contain ads images
-        ArrayList<String> listQuangCao = new ArrayList<>();
-        listQuangCao.add("https://www.vinabook.com/images/detailed/191/P65346Mbia_truoc.jpg");
-        listQuangCao.add("https://bizweb.dktcdn.net/100/180/408/products/nu-si-thoi-gio-bui.jpg?v=1615989127707");
-        listQuangCao.add("https://www.khaitam.com/Data/Sites/1/Product/14845/bo-cong-anh-nho.png");
-        //Import image to ImageView, ImageView to app
-        for (int i = 0; i < listQuangCao.size(); i++) {
-            ImageView imageView = new ImageView(getApplicationContext());
-            //Using Picasso
-            Picasso.get().load(listQuangCao.get(i)).into(imageView);
-            //Fit image
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            //Add image from ImageView to ViewFlipper
-            viewFlipper.addView(imageView);
-        }
-        //Config auto run for viewFlipper in 4 second
-        viewFlipper.setFlipInterval(3000);
-        //run auto viewFlipper
-        viewFlipper.setAutoStart(true);
-        //Call animation for IN and OUT ads
-        Animation animation_slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right);
-        Animation animation_slide_out = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right);
-        //Call animation to viewFlipper
-        viewFlipper.setInAnimation(animation_slide_in);
-        viewFlipper.setInAnimation(animation_slide_out);
-    }
-
     private void mapping() {
         toolbar = findViewById(R.id.toolbarMainScreen);
         viewFlipper = findViewById(R.id.viewFlipper);
@@ -139,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
         loadCategories();
         actionBar();
         actionViewFlipper();
-
 
         listViewNew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -173,65 +126,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void loadCategories() {
-        //Category
-        categoryArrayList = new ArrayList<>();
-        categoryArrayList.add(new Category("Tất cả sách", "https://i.ibb.co/vJpV77p/Png-Item-194483.png"));
-        categoryArrayList.add(new Category("Sách yêu thích", "https://www.pngkit.com/png/full/14-141827_png-file-read-a-book-icon.png"));
-        categoryArrayList.add(new Category("Thông tin ứng dụng", "https://i.ibb.co/vVfFkQ5/information.png"));
-        categoryArrayList.add(new Category("Đăng Xuất", "https://i.ibb.co/9Nn9byc/log-out.png"));
-        adapterCategory = new AdapterCategory(this, R.layout.category, categoryArrayList);
-        listView.setAdapter(adapterCategory);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.mymenu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //Click search icon move to SearchActivity
-        switch (item.getItemId()) {
-            case R.id.menu1:
-                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(intent);
-                break;
-            default:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null) {
-            // pre-condition
-            return;
-        }
-
-        int totalHeight = listView.getPaddingTop() + listView.getPaddingBottom();
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-
-            if (listItem != null) {
-                // This next line is needed before you call measure or else you won't get measured height at all. The listitem needs to be drawn first to know the height.
-                listItem.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-                listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-                totalHeight += listItem.getMeasuredHeight();
-
-            }
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-        listView.requestLayout();
-
-    }
-
     private void initViews() {
         ApiService.apiService.isTokenValidation(PreferrenceUtils.getJwt(getApplicationContext())).enqueue(new Callback<Boolean>() {
             @Override
@@ -255,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadNewest() {
-
         ApiService.apiService.getNewestBook(PreferrenceUtils.getJwt(this)).enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
@@ -263,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
                     bookArrayList = (ArrayList<Book>) response.body();
                     adapterNewBook = new AdapterBook(getApplicationContext(), bookArrayList);
                     listViewNew.setAdapter(adapterNewBook);
-                    setListViewHeightBasedOnChildren(listViewNew);
                 } else {
                     ObjectMapper objectMapper = new ObjectMapper();
                     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -356,6 +248,83 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(t.getMessage().toString());
             }
         });
+    }
+
+    private void loadCategories() {
+        //Category
+        categoryArrayList = new ArrayList<>();
+        categoryArrayList.add(new Category("Tất cả sách", "https://i.ibb.co/vJpV77p/Png-Item-194483.png"));
+        categoryArrayList.add(new Category("Sách yêu thích", "https://www.pngkit.com/png/full/14-141827_png-file-read-a-book-icon.png"));
+        categoryArrayList.add(new Category("Thông tin ứng dụng", "https://i.ibb.co/vVfFkQ5/information.png"));
+        categoryArrayList.add(new Category("Đăng Xuất", "https://i.ibb.co/9Nn9byc/log-out.png"));
+        adapterCategory = new AdapterCategory(this, R.layout.category, categoryArrayList);
+        listView.setAdapter(adapterCategory);
+    }
+
+
+    //actionbar vs toolbar
+    private void actionBar() {
+        //Support method for toolbar
+        setSupportActionBar(toolbar);
+        //set button for actionbar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        toolbar.setNavigationIcon(android.R.drawable.ic_menu_sort_by_size);
+        //click event
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mymenu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //Click search icon move to SearchActivity
+        switch (item.getItemId()) {
+            case R.id.menu1:
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void actionViewFlipper() {
+        //Array contain ads images
+        ArrayList<String> listQuangCao = new ArrayList<>();
+        listQuangCao.add("https://www.vinabook.com/images/detailed/191/P65346Mbia_truoc.jpg");
+        listQuangCao.add("https://bizweb.dktcdn.net/100/180/408/products/nu-si-thoi-gio-bui.jpg?v=1615989127707");
+        listQuangCao.add("https://www.khaitam.com/Data/Sites/1/Product/14845/bo-cong-anh-nho.png");
+        //Import image to ImageView, ImageView to app
+        for (int i = 0; i < listQuangCao.size(); i++) {
+            ImageView imageView = new ImageView(getApplicationContext());
+            //Using Picasso
+            Picasso.get().load(listQuangCao.get(i)).into(imageView);
+            //Fit image
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            //Add image from ImageView to ViewFlipper
+            viewFlipper.addView(imageView);
+        }
+        //Config auto run for viewFlipper in 4 second
+        viewFlipper.setFlipInterval(3000);
+        //run auto viewFlipper
+        viewFlipper.setAutoStart(true);
+        //Call animation for IN and OUT ads
+        Animation animation_slide_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right);
+        Animation animation_slide_out = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right);
+        //Call animation to viewFlipper
+        viewFlipper.setInAnimation(animation_slide_in);
+        viewFlipper.setInAnimation(animation_slide_out);
     }
 
     @Override

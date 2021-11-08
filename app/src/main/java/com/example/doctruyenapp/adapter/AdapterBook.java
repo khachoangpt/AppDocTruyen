@@ -53,19 +53,14 @@ public class AdapterBook extends BaseAdapter {
     public View getView(int i, View convertView, ViewGroup viewGroup) {
         ViewHolder viewHolder = null;
         viewHolder = new ViewHolder();
-
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.new_story, null);
-
         viewHolder.txtStoryName = convertView.findViewById(R.id.tvTenTruyenNew);
         viewHolder.imgStory = convertView.findViewById(R.id.imgNewTruyen);
         convertView.setTag(viewHolder);
-
         Book book = (Book) getItem(i);
         viewHolder.txtStoryName.setText(book.title);
-
         Picasso.get().load(book.getImage()).placeholder(R.drawable.ic_load).error(R.drawable.ic_baseline_image_24).into(viewHolder.imgStory);
-
         return convertView;
     }
 }

@@ -50,7 +50,7 @@ public class MediaActivity extends AppCompatActivity {
     private SimpleExoPlayer simpleExoPlayer;
     private PlayerView playerView;
     private ImageView imageCover;
-    private TextView tvTitle, tvContent, tvAuthor, tvLike;
+    private TextView tvTitle, tvContent, tvAuthor, tvLike,tvcmtContent;
     private EditText etComment;
     private Button btnLike;
     ArrayList<Comment> commentArrayList;
@@ -135,24 +135,22 @@ public class MediaActivity extends AppCompatActivity {
         tvContent = findViewById(R.id.tvContent);
         tvAuthor = findViewById(R.id.tvAuthor);
         etComment = findViewById(R.id.etComment);
-        setUpComment();
-        loadComment();
         Picasso.get().load(book.getImage()).into(imageCover);
         tvTitle.setText("Truyện: " + book.getTitle());
         tvContent.setText(book.getDescription());
         tvContent.setMovementMethod(new ScrollingMovementMethod());
         tvAuthor.setText("Tác giả: " + book.getAuthor());
-
         playerView = findViewById(R.id.playerview);
         playerView.setControllerShowTimeoutMs(0);
         playerView.setCameraDistance(30);
         simpleExoPlayer = new SimpleExoPlayer.Builder(this).build();
         playerView.setPlayer(simpleExoPlayer);
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
-                Util.getUserAgent(this, "app"));
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "app"));
         MediaSource mediaSource = new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(book.getAudio()));
         simpleExoPlayer.prepare(mediaSource);
         simpleExoPlayer.setPlayWhenReady(true);
+        setUpComment();
+        loadComment();
     }
 
     private void setUpComment() {

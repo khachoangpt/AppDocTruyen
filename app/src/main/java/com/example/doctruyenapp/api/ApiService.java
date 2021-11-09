@@ -35,7 +35,7 @@ public interface ApiService {
 
 
     ApiService apiService = new Retrofit.Builder()
-            .baseUrl("https://fat-dolphin-15.loca.lt/api/v1/")
+            .baseUrl("https://wise-ladybug-67.loca.lt/api/v1/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);

@@ -50,7 +50,7 @@ public class MediaActivity extends AppCompatActivity {
     private SimpleExoPlayer simpleExoPlayer;
     private PlayerView playerView;
     private ImageView imageCover;
-    private TextView tvTitle, tvContent, tvAuthor, tvLike,tvcmtContent;
+    private TextView tvTitle, tvContent, tvAuthor, tvLike;
     private EditText etComment;
     private Button btnLike;
     ArrayList<Comment> commentArrayList;
@@ -62,79 +62,60 @@ public class MediaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media);
-        initViews();
+        getBook();
     }
 
 
-    private void initViews() {
+
+
+    private void getBook() {
         Intent intent = getIntent();
         long id = intent.getLongExtra("id", 1);
-        if (intent.getBooleanExtra("isSearch", false)) {
-            ApiService.apiService.getBook(PreferrenceUtils.getJwt(this), id, true).enqueue(new Callback<Book>() {
-                @Override
-                public void onResponse(Call<Book> call, Response<Book> response) {
-                    if (response.code() == 401) {
-                        Intent intent = new Intent(MediaActivity.this, LoginActivity.class);
-                        intent.putExtra("session", "expired");
-                        startActivity(intent);
-                    } else if (response.isSuccessful()) {
-                        book = response.body();
-                        setIconLike();
-                    } else {
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                        ErrorException errorException = null;
-                        try {
-                            errorException = objectMapper.readValue(response.errorBody().string(), ErrorException.class);
-                            System.out.println(errorException.toString());
-                            Toast.makeText(MediaActivity.this, errorException.getErrors().get(0), Toast.LENGTH_SHORT).show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+        boolean isSearch = intent.getBooleanExtra("isSearch", false);
+        ApiService.apiService.getBook(PreferrenceUtils.getJwt(this), id, isSearch).enqueue(new Callback<Book>() {
+            @Override
+            public void onResponse(Call<Book> call, Response<Book> response) {
+                if (response.code() == 401) {
+                    Intent intent = new Intent(MediaActivity.this, LoginActivity.class);
+                    intent.putExtra("session", "expired");
+                    startActivity(intent);
+                } else if (response.isSuccessful()) {
+                    book = response.body();
+                    initPlayer();
+                } else {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                    ErrorException errorException = null;
+                    try {
+                        errorException = objectMapper.readValue(response.errorBody().string(), ErrorException.class);
+                        System.out.println(errorException.toString());
+                        Toast.makeText(MediaActivity.this, errorException.getErrors().get(0), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
-
-                @Override
-                public void onFailure(Call<Book> call, Throwable t) {
-                    Toast.makeText(MediaActivity.this, "Hệ thống bận!", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            ApiService.apiService.getBook(PreferrenceUtils.getJwt(this), id, false).enqueue(new Callback<Book>() {
-                @Override
-                public void onResponse(Call<Book> call, Response<Book> response) {
-                    if (response.isSuccessful()) {
-                        book = response.body();
-                        setIconLike();
-                    } else {
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                        ErrorException errorException = null;
-                        try {
-                            errorException = objectMapper.readValue(response.errorBody().string(), ErrorException.class);
-                            System.out.println(errorException.toString());
-                            Toast.makeText(MediaActivity.this, errorException.getErrors().get(0), Toast.LENGTH_SHORT).show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Book> call, Throwable t) {
-                    Toast.makeText(MediaActivity.this, "Hệ thống bận!", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-
+            }
+            @Override
+            public void onFailure(Call<Book> call, Throwable t) {
+                Toast.makeText(MediaActivity.this, "Hệ thống bận!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initPlayer() {
+        btnLike = findViewById(R.id.btnLike);
+        tvLike = findViewById(R.id.tvLike);
         imageCover = findViewById(R.id.imageCover);
         tvTitle = findViewById(R.id.tvTitle);
         tvContent = findViewById(R.id.tvContent);
         tvAuthor = findViewById(R.id.tvAuthor);
         etComment = findViewById(R.id.etComment);
+
+        setIconLike();
+        setLike();
+        setUpComment();
+        loadComment();
+
         Picasso.get().load(book.getImage()).into(imageCover);
         tvTitle.setText("Truyện: " + book.getTitle());
         tvContent.setText(book.getDescription());
@@ -149,8 +130,7 @@ public class MediaActivity extends AppCompatActivity {
         MediaSource mediaSource = new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(book.getAudio()));
         simpleExoPlayer.prepare(mediaSource);
         simpleExoPlayer.setPlayWhenReady(true);
-        setUpComment();
-        loadComment();
+
     }
 
     private void setUpComment() {
@@ -202,13 +182,13 @@ public class MediaActivity extends AppCompatActivity {
         ApiService.apiService.isLikeBook(PreferrenceUtils.getJwt(this), id).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                btnLike = findViewById(R.id.btnLike);
+//                btnLike = findViewById(R.id.btnLike);
                 if (response.body()) {
                     btnLike.setText("Liked");
                 } else {
                     btnLike.setText("Like");
                 }
-                setLike();
+
             }
 
             @Override
@@ -224,11 +204,12 @@ public class MediaActivity extends AppCompatActivity {
         ApiService.apiService.countLike(PreferrenceUtils.getJwt(this), id).enqueue(new Callback<Long>() {
             @Override
             public void onResponse(Call<Long> call, Response<Long> response) {
-                tvLike = findViewById(R.id.tvLike);
+//                tvLike = findViewById(R.id.tvLike);
                 tvLike.setText(response.body().toString());
-                initPlayer();
+             //   initPlayer();
 
             }
+
             @Override
             public void onFailure(Call<Long> call, Throwable t) {
                 Toast.makeText(MediaActivity.this, "Hệ thống bận!", Toast.LENGTH_SHORT).show();
@@ -292,6 +273,7 @@ public class MediaActivity extends AppCompatActivity {
                         }
                     }
                 }
+
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
                     Toast.makeText(MediaActivity.this, "Hệ thống bận!", Toast.LENGTH_SHORT).show();
@@ -323,6 +305,5 @@ public class MediaActivity extends AppCompatActivity {
             simpleExoPlayer = null;
         }
     }
-
 
 }
